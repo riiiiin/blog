@@ -1,5 +1,5 @@
-import { ChangeEventHandler, FC, useEffect, useState } from "react";
-import type { Blog, Tag, UpdateBlogPayload } from "../types/blog";
+import { FC, useEffect, useState } from "react";
+import type { Blog, Tag, UpdateBlogPayload } from "../../types/blog";
 import {
     Typography,
     Button,
@@ -10,12 +10,12 @@ import {
     Box,
     TextField,
     Chip,
-    FormControl,
     Checkbox,
     FormControlLabel,
   } from '@mui/material'
-  import { modalInnerStyle } from '../styles/modal'
-  import { toggleTags } from "../lib/toggleTags";
+  import { modalInnerStyle } from '../../styles/modal'
+  import { toggleTags } from "../../lib/toggleTags";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
     blog: Blog;
@@ -29,6 +29,7 @@ const BlogItem: FC<Props> = ({ blog, onDelete, onUpdate, tags }) => {
     const [editTitle, setEditTitle] = useState('')
     const [editBody, setEditBody] = useState('')
     const [editTags, setEditTags] = useState<Tag[]>([])
+    const navigate = useNavigate();
 
     useEffect(() => {
         setEditBody(blog.body)
@@ -48,9 +49,13 @@ const BlogItem: FC<Props> = ({ blog, onDelete, onUpdate, tags }) => {
 
     const handleDelete = () => onDelete(blog.id)
 
+    const handleClick = () => {
+        navigate(`/blogs/${blog.id}`)
+    }
+
     return(
         <Card sx={{p:1}}>
-            <Grid container spacing={2} alignItems="center">
+            <Grid container spacing={2} alignItems="center" onClick={handleClick}>
                 <Grid item xs={1}>
                     <Grid item xs={9}>
                         <Stack spacing={1}>

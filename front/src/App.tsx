@@ -3,130 +3,17 @@ import 'modern-css-reset';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Box, Stack, Typography } from '@mui/material';
 import { NewBlogPayload, Blog, Tag, NewTagPayload, UpdateBlogPayload } from './types/blog';
-import BlogForm from './components/BlogForm';
-import BlogList from './components/BlogList';
 import { addBlogItem, getBlogItems, updateBlogItem, deleteBlogItem } from './lib/api/blog';
 import { addTagItem, getTagItems, deleteTagItem } from './lib/api/tag';
-import SideNav from './components/SideNav';
+import Home from './components/page/Home';
+import Post from './components/page/Post';
+import NotFound from './components/page/NotFound';
+import { Route, Routes } from 'react-router-dom';
+import Blogs from './components/page/Blogs';
+import BlogContent from './components/page/BlogContent';
+import BlogEdit from './components/page/BlogEdit';
 
 
-const BlogApp: FC = () => {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [tags, setTags] = useState<Tag[]>([]);
-  const [filterTagId, setFilterTagId] = useState<number | null>(null);
-
-  const onSubmit = async (payload: NewBlogPayload) => {
-    if (!payload.body || !payload.title) return;
-
-    await addBlogItem(payload)
-    const blogs = await getBlogItems()
-    setBlogs(blogs)
-  }
-
-  const onUpdate = async (updateBlog: UpdateBlogPayload) => {
-    await updateBlogItem(updateBlog)
-    const blogs = await getBlogItems();
-    setBlogs(blogs)
-  }
-
-  const onDelete = async (id: number) => {
-    await deleteBlogItem(id)
-    const blogs = await getBlogItems();
-    setBlogs(blogs)
-  }
-
-  const onSelectTag = (tag: Tag | null) => {
-    setFilterTagId(tag?.id ?? null);
-  }
-
-  const onSubmitNewTag =async (newTag: NewTagPayload) => {
-    if (!tags.some((tag) => tag.name === newTag.name)) {
-      const res = await addTagItem(newTag)
-      setTags([...tags, res])
-    }
-  }
-
-  const onDeleteTag =async (id: number) => {
-    await deleteTagItem(id);
-    setTags((prev) => prev.filter((tag) => tag.id !== id))
-  }
-
-  const dispBlog = filterTagId
-    ? blogs.filter((blog) => 
-      blog.tags.some((tag) => tag.id === filterTagId)
-    )
-    : blogs;
- 
-  useEffect(() => {
-    const aaa = async () => {
-      const blogs = await getBlogItems()
-      setBlogs(blogs)
-      const tagResponse = await getTagItems();
-      setTags(tagResponse)
-    }
-    aaa()
-  }, [])
-
-  return (
-    <>
-      <Box
-        sx={{
-          backgroundColor: 'white',
-          borderBottom: '1px solid gray',
-          display: 'flex',
-          alignItems: 'center',
-          position: 'fixed',
-          top: 0,
-          p: 2,
-          width: '100%',
-          height: 80,
-          zIndex: 3,
-        }}
-      >
-        <Typography variant="h1">Todo App</Typography>
-      </Box>
-      <Box
-        sx={{
-          backgroundColor: 'white',
-          borderRight: '1px solid gray',
-          position: 'fixed',
-          height: 'calc(100% - 80px)',
-          width: 200,
-          zIndex: 2,
-          left: 0,
-        }}
-      >
-        <SideNav
-          tags={tags}
-          onSelectTag={onSelectTag}
-          filterTagId={filterTagId}
-          onSubmitNewTag={onSubmitNewTag}
-          onDeleteTag={onDeleteTag}
-        />
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          p: 5,
-          mt: 10,
-        }}
-      >
-        <Box maxWidth={700} width="100%">
-          <Stack spacing={5}>
-            <BlogForm onSubmit={onSubmit} tags={tags} />
-            <BlogList
-              blogs={dispBlog}
-              tags={tags}
-              onUpdate={onUpdate}
-              onDelete={onDelete}
-            />
-          </Stack>
-        </Box>
-      </Box>
-    </>
-  )
-}
 
 const theme = createTheme({
   typography: {
@@ -142,7 +29,20 @@ const theme = createTheme({
 const App: FC = () => {
   return (
     <ThemeProvider theme={theme}>
-    <BlogApp />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="*" element={<NotFound />} />
+        <Route path="/post" element={<Post />} />
+        <Route path="/blogs" element={<Blogs />}/>
+        <Route path="/blogs">
+          <Route path=":blogId" element={<BlogContent />} />
+        </Route>
+        <Route path="/blogs">
+          <Route path=":blogId">
+            <Route path="edit" element={<BlogEdit />} />
+          </Route>
+        </Route>
+      </Routes>
     </ThemeProvider>
   );
 }

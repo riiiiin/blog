@@ -1,8 +1,8 @@
 import { FC, useState } from 'react';
-import { NewBlogPayload, Tag } from '../types/blog';
+import { NewBlogPayload, Tag } from '../../types/blog';
 import { Box, Button, TextField, Paper, Grid, FormControlLabel, Stack, Modal, Chip, Checkbox } from '@mui/material';
-import { modalInnerStyle } from '../styles/modal';
-import { toggleTags } from '../lib/toggleTags';
+import { modalInnerStyle } from '../../styles/modal';
+import { toggleTags } from '../../lib/toggleTags';
 
 type Props = {
     onSubmit: (newBlog: NewBlogPayload) => void,

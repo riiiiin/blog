@@ -15,8 +15,8 @@ import LabelIcon from '@mui/icons-material/Label'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { useState, FC } from 'react'
-import { modalInnerStyle } from '../styles/modal'
-import { Tag, NewTagPayload } from '../types/blog'
+import { modalInnerStyle } from '../../styles/modal'
+import { Tag, NewTagPayload } from '../../types/blog'
 
 type Props = {
     tags: Tag[],

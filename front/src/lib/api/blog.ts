@@ -26,6 +26,16 @@ export const getBlogItems = async() => {
     return json
 }
 
+export const getBlogItem =async (id: number) => {
+    const res = await fetch(`http://localhost:3000/blogs/${id}`)
+    if (!res.ok) {
+        throw new Error('get Blog request failed')
+    }
+    const json: Blog = await res.json()
+    return json
+    
+}
+
 export const updateBlogItem = async (blog: UpdateBlogPayload) => {
     const { id, ...updateBlog } = blog
     const res = await fetch(`http://localhost:3000/blogs/${id}`, {
