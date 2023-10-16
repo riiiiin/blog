@@ -1,8 +1,8 @@
 import { FC, useEffect, useState } from 'react';
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Blog, UpdateBlogPayload } from '../../types/blog';
-import { deleteBlogItem, getBlogItem, updateBlogItem } from '../../lib/api/blog';
+import { Blog } from '../../types/blog';
+import { deleteBlogItem, getBlogItem } from '../../lib/api/blog';
 import Header from '../ui/Header';
 
 type Props = {

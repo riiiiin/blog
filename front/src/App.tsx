@@ -1,10 +1,6 @@
-import { useState, FC, useEffect } from 'react';
+import { FC } from 'react';
 import 'modern-css-reset';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { Box, Stack, Typography } from '@mui/material';
-import { NewBlogPayload, Blog, Tag, NewTagPayload, UpdateBlogPayload } from './types/blog';
-import { addBlogItem, getBlogItems, updateBlogItem, deleteBlogItem } from './lib/api/blog';
-import { addTagItem, getTagItems, deleteTagItem } from './lib/api/tag';
 import Home from './components/page/Home';
 import Post from './components/page/Post';
 import NotFound from './components/page/NotFound';
@@ -12,8 +8,6 @@ import { Route, Routes } from 'react-router-dom';
 import Blogs from './components/page/Blogs';
 import BlogContent from './components/page/BlogContent';
 import BlogEdit from './components/page/BlogEdit';
-
-
 
 const theme = createTheme({
   typography: {

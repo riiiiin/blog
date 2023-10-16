@@ -20,11 +20,10 @@ const Post: FC<Props> = ({  }) => {
     }
 
     useEffect(() => {
-        const aaa = async () => {
+        (async () => {
             const tagResponse = await getTagItems();
             setTags(tagResponse)
-        }
-        aaa();
+        })()
     }, [])
 
     return (

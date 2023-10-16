@@ -11,7 +11,7 @@ const Home: FC<Props> = ({  }) => {
 
     return (
         <>
-            <Header />
+            <Header title='Blog'></Header>
             <Box sx={{
                 marginTop: '100px'
             }}>
