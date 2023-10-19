@@ -1,9 +1,9 @@
 import { useState, FC, useEffect } from 'react';
 import 'modern-css-reset';
 import { Box, Stack, Typography } from '@mui/material';
-import { Blog, Tag, NewTagPayload, UpdateBlogPayload } from '../../types/blog';
+import { Blog, Tag, NewTagPayload } from '../../types/blog';
 import BlogItem from '../model/BlogItem';
-import { getBlogItems, updateBlogItem, deleteBlogItem } from '../../lib/api/blog';
+import { getBlogItems } from '../../lib/api/blog';
 import { addTagItem, getTagItems, deleteTagItem } from '../../lib/api/tag';
 import SideNav from '../model/SideNav';
 import Header from '../ui/Header';
@@ -16,18 +16,6 @@ const Blogs: FC<Props> = ({  }) => {
     const [blogs, setBlogs] = useState<Blog[]>([]);
     const [tags, setTags] = useState<Tag[]>([]);
     const [filterTagId, setFilterTagId] = useState<number | null>(null);
-
-    const onUpdate = async (updateBlog: UpdateBlogPayload) => {
-        await updateBlogItem(updateBlog)
-        const blogs = await getBlogItems();
-        setBlogs(blogs)
-    }
-
-    const onDelete = async (id: number) => {
-        await deleteBlogItem(id)
-        const blogs = await getBlogItems();
-        setBlogs(blogs)
-    }
 
     const onSelectTag = (tag: Tag | null) => {
         setFilterTagId(tag?.id ?? null);
@@ -52,13 +40,12 @@ const Blogs: FC<Props> = ({  }) => {
     : blogs;
  
     useEffect(() => {
-        const aaa = async () => {
+        (async () => {
         const blogs = await getBlogItems()
         setBlogs(blogs)
         const tagResponse = await getTagItems();
         setTags(tagResponse)
-        }
-        aaa()
+        })()
     }, [])
 
     return (
@@ -102,8 +89,6 @@ const Blogs: FC<Props> = ({  }) => {
                                         key={blog.id}
                                         blog={blog}
                                         tags={tags}
-                                        onUpdate={onUpdate}
-                                        onDelete={onDelete}
                                     />
                                 ))
                             }
